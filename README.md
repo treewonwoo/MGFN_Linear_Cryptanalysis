@@ -124,18 +124,7 @@ Recovered : B745C5C6106198F3CA4CD45E2B9F910F
 [OK] master_key matched
 ```
 
----
 
-## 📚 References
-
-This implementation is part of academic and experimental research on block cipher cryptanalysis.  
-The MGFN-18R cipher is a reduced-round toy cipher used to demonstrate practical attack methodologies such as:
-
-- Linear bias exploitation
-- Statistical nibble ranking
-- Exhaustive search using partial round key knowledge
-
----
 
 ## 📄 License
 
