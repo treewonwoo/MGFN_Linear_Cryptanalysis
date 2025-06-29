@@ -25,30 +25,33 @@ The code performs:
 
 This project is structured for Visual Studio:
 
+```text
 MGFN_18R_LC_CODE/
-├── Source File/
-│   └── MGFN_18R_LC.c             # Main logic: linear cryptanalysis and master-key recovery
-├── Header File/
-│   ├── MGFN_18R.c                # Cipher round function and key schedule
-│   ├── MGFN_18R.h                # Definitions: KeySchedule, Pair, S-box
-│   ├── recover_masterkey.c       # Final key recovery logic using R16~R18
-│   └── recover_masterkey.h       # API: find_master_key()
+├── src/
+│   └── MGFN_18R_LC.c            # Main logic: linear cryptanalysis and master-key recovery
+│
+├── include/
+│   ├── MGFN_18R.c               # Cipher round function and key schedule
+│   ├── MGFN_18R.h               # Definitions: KeySchedule, Pair, S-box
+│   ├── recover_masterkey.c      # Final key recovery logic using R16~R18
+│   └── recover_masterkey.h      # API: find_master_key()
+```
 
-All `.c` files are compiled as part of the project.  
-No need to build them separately.
+> All `.c` files are compiled as part of the project.  
+> No need to build them separately.
 
 ---
 
 ## ⚙️ Build (Visual Studio)
 
-Requirements:
+### Requirements:
 - Visual Studio 2019 or later
-- OpenMP enabled (via /openmp)
+- OpenMP enabled (via `/openmp`)
 - C11 or later language standard
 
-How to configure:
+### How to configure:
 
-1. Open or create a project named MGFN_18R_LC_CODE
+1. Open or create a project named `MGFN_18R_LC_CODE`
 2. Add the 4 `.c` and 2 `.h` files to the project
 3. Enable OpenMP:
    Project → Properties → C/C++ → Language → OpenMP Support → Yes
@@ -62,10 +65,12 @@ How to configure:
 
 Run the executable to start full recovery flow:
 
-    MGFN_18R_LC.exe
+```bash
+MGFN_18R_LC.exe
+```
 
 This will:
-1. Generate N plaintext-ciphertext pairs using a random 128-bit master key
+1. Generate `N` plaintext-ciphertext pairs using a random 128-bit master key
 2. Perform 3-round linear cryptanalysis
 3. Recover 32-bit round keys:
    - rk16 ⊕ K10_R
@@ -74,23 +79,21 @@ This will:
 4. Search among 2^35 possible master keys using 2 known (P, C) pairs
 5. Output recovered key and verification result
 
-Note:  
-Dataset size and file paths are defined in `MGFN_18R_LC.c`.  
-You can adjust:
-- `#define TARGET_PAIRS ((uint64_t)1ULL << N)` for dataset size
-- `const char* DATA_BIN = "..."` and `LOG_FILE = "..."` for file output location
+> 💡 **Note:**  
+> Dataset size and file paths are defined in `MGFN_18R_LC.c`.  
+> You can adjust:
+> - `#define TARGET_PAIRS ((uint64_t)1ULL << N)` for dataset size  
+> - `const char* DATA_BIN = "..."`, `LOG_FILE = "..."` for file paths
 
 ---
 
 ## 📂 Output
 
-- Ciphertext dataset (binary):
-  ./pt_ct_tmp.bin
+- Ciphertext dataset (binary):  
+  `./pt_ct_tmp.bin`
 
-- Recovered round keys and final master key log:
-  ./keys.txt
-
-These files are configurable from within the source code.
+- Recovered round keys and master key log:  
+  `./keys.txt`
 
 ---
 
@@ -104,7 +107,39 @@ int find_master_key(
     uint32_t        rk18_xor_K10_R,  // 32-bit key: rk18 ^ K10_R
     uint8_t         master_key_out[16]
 );
+```
 
+This function performs an exhaustive search over 2^35 candidate keys  
+using the given 2 (P, C) pairs and the recovered round keys.
+
+---
+
+## 🧪 Example Output
+
+```
+[*] Start Linear Cryptanalysis
+[Round 0, Stage 0] ...
+...
+Recovered : B745C5C6106198F3CA4CD45E2B9F910F
+[OK] master_key matched
+```
+
+---
+
+## 📚 References
+
+This implementation is part of academic and experimental research on block cipher cryptanalysis.  
+The MGFN-18R cipher is a reduced-round toy cipher used to demonstrate practical attack methodologies such as:
+
+- Linear bias exploitation
+- Statistical nibble ranking
+- Exhaustive search using partial round key knowledge
+
+---
+
+## 📄 License
+
+```
 MIT License
 
 Copyright (c) 2025 Wonwoo Song
@@ -126,3 +161,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+```
