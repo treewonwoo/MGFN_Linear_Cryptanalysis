@@ -131,7 +131,7 @@ Recovered : B745C5C6106198F3CA4CD45E2B9F910F
 ```
 MIT License
 
-Copyright (c) 2025 Wonwoo Song
+Copyright (c) 2025 Wonwoo Song, Namil Kim, Seungjun Baek, Yongjin Jeon, Giyoon Kim and Jongsung Kim
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the “Software”), to deal
